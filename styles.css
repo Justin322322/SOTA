@@ -1,0 +1,856 @@
+/* Game Style CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --terminal-green: #00ff00;
+    --terminal-dim: #006600;
+    --terminal-bg: #000000;
+    --terminal-font: 'Share Tech Mono', monospace;
+    --scan-line-size: 2px;
+}
+
+body {
+    font-family: var(--terminal-font);
+    background: var(--terminal-bg);
+    color: var(--terminal-green);
+    line-height: 1.6;
+    position: relative;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* CRT Screen Effect */
+.crt-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        rgba(18, 16, 16, 0) 50%,
+        rgba(0, 0, 0, 0.25) 50%
+    );
+    background-size: 100% 4px;
+    z-index: 1000;
+    pointer-events: none;
+    animation: flicker 0.15s infinite;
+}
+
+.terminal {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    position: relative;
+    background: rgba(0, 20, 0, 0.8);
+    border: 2px solid var(--terminal-green);
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+    border-bottom: 2px solid var(--terminal-green);
+    padding-bottom: 20px;
+}
+
+.header h1 {
+    font-size: 2.5em;
+    color: var(--terminal-green);
+    text-shadow: 0 0 10px var(--terminal-green);
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: var(--terminal-dim);
+    font-size: 1.2em;
+    font-style: italic;
+}
+
+.ascii-art {
+    font-family: monospace;
+    white-space: pre;
+    text-align: center;
+    color: var(--terminal-green);
+    margin: 20px 0;
+    line-height: 1.2;
+    text-shadow: 0 0 5px var(--terminal-green);
+}
+
+/* Game Container */
+.game-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.left-panel, .right-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Quick Actions */
+.quick-actions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    padding: 10px;
+    background: rgba(0, 20, 0, 0.3);
+    border: 1px solid var(--terminal-green);
+}
+
+.action-btn {
+    background: transparent;
+    color: var(--terminal-green);
+    border: 1px solid var(--terminal-green);
+    padding: 10px;
+    font-family: var(--terminal-font);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1.1em;
+}
+
+.action-btn:hover {
+    background: var(--terminal-green);
+    color: var(--terminal-bg);
+}
+
+/* Location Info */
+.location-info {
+    border: 1px solid var(--terminal-green);
+    padding: 10px;
+    background: rgba(0, 20, 0, 0.3);
+}
+
+.location-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--terminal-dim);
+}
+
+.npc-counter {
+    color: var(--terminal-dim);
+}
+
+.npc-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.npc-card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px;
+    border: 1px solid var(--terminal-dim);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.npc-card:hover {
+    background: rgba(0, 255, 0, 0.1);
+    border-color: var(--terminal-green);
+}
+
+.npc-avatar {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5em;
+    background: rgba(0, 20, 0, 0.5);
+    border-radius: 50%;
+}
+
+.npc-info {
+    flex: 1;
+}
+
+.npc-name {
+    color: var(--terminal-green);
+    font-weight: bold;
+}
+
+.npc-status {
+    font-size: 0.9em;
+    color: var(--terminal-dim);
+}
+
+/* Quick Commands */
+.quick-commands {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+    margin-top: 5px;
+}
+
+.cmd-btn {
+    background: transparent;
+    color: var(--terminal-green);
+    border: 1px solid var(--terminal-dim);
+    padding: 5px;
+    font-family: var(--terminal-font);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.cmd-btn:hover {
+    border-color: var(--terminal-green);
+    background: rgba(0, 255, 0, 0.1);
+}
+
+/* Dialog Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+}
+
+.modal-content {
+    position: relative;
+    margin: 10% auto;
+    width: 80%;
+    max-width: 600px;
+    background: var(--terminal-bg);
+    border: 2px solid var(--terminal-green);
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+}
+
+.dialog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid var(--terminal-green);
+}
+
+.close-btn {
+    color: var(--terminal-green);
+    font-size: 1.5em;
+    cursor: pointer;
+}
+
+.close-btn:hover {
+    color: #ff0000;
+}
+
+.dialog-body {
+    padding: 20px;
+}
+
+#dialog-text {
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+#dialog-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.dialog-option {
+    background: transparent;
+    color: var(--terminal-green);
+    border: 1px solid var(--terminal-green);
+    padding: 10px;
+    text-align: left;
+    font-family: var(--terminal-font);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.dialog-option:hover {
+    background: var(--terminal-green);
+    color: var(--terminal-bg);
+}
+
+/* Enhanced Game Output */
+.game-output {
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+}
+
+.output-text {
+    flex: 1;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    padding-right: 10px;
+}
+
+.output-text p {
+    margin: 5px 0;
+    padding: 5px;
+    border-left: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.output-text p:hover {
+    border-left-color: var(--terminal-green);
+    background: rgba(0, 255, 0, 0.05);
+}
+
+/* Scrollbar for output */
+.output-text::-webkit-scrollbar {
+    width: 8px;
+}
+
+.output-text::-webkit-scrollbar-track {
+    background: rgba(0, 20, 0, 0.3);
+}
+
+.output-text::-webkit-scrollbar-thumb {
+    background: var(--terminal-green);
+    border-radius: 4px;
+}
+
+/* Status Effects */
+.status-good {
+    color: #00ff00;
+}
+
+.status-warning {
+    color: #ffff00;
+}
+
+.status-danger {
+    color: #ff0000;
+    animation: pulse 1s infinite;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .game-container {
+        grid-template-columns: 1fr;
+    }
+
+    .quick-actions {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .quick-commands {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .modal-content {
+        width: 95%;
+        margin: 5% auto;
+    }
+}
+
+/* Map Styles */
+.game-map {
+    border: 1px solid var(--terminal-green);
+    background: rgba(0, 20, 0, 0.5);
+    height: 400px;
+}
+
+#map {
+    height: 100%;
+    width: 100%;
+    filter: sepia(100%) hue-rotate(50deg) saturate(100%) brightness(80%);
+}
+
+/* Game Interface */
+.game-interface {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.status-panel {
+    border: 1px solid var(--terminal-green);
+    padding: 10px;
+}
+
+.status-box {
+    color: var(--terminal-green);
+    font-family: var(--terminal-font);
+    white-space: pre;
+}
+
+.game-output {
+    border: 1px solid var(--terminal-green);
+    padding: 10px;
+    height: 200px;
+    overflow-y: auto;
+    background: rgba(0, 20, 0, 0.3);
+}
+
+.output-text p {
+    margin: 5px 0;
+    opacity: 0;
+    animation: typeWriter 0.1s steps(1) forwards;
+}
+
+.game-input {
+    border: 1px solid var(--terminal-green);
+    padding: 10px;
+}
+
+.command-list {
+    margin-bottom: 10px;
+    padding: 5px;
+    background: rgba(0, 20, 0, 0.3);
+}
+
+.command-list p {
+    margin: 2px 0;
+    color: var(--terminal-dim);
+}
+
+.input-line {
+    display: flex;
+    align-items: center;
+}
+
+#game-command-form {
+    display: flex;
+    width: 100%;
+}
+
+#command {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--terminal-green);
+    font-family: var(--terminal-font);
+    font-size: 1em;
+    padding: 5px;
+    margin-left: 5px;
+}
+
+#command:focus {
+    outline: none;
+}
+
+/* Game Footer */
+.game-footer {
+    margin-top: 20px;
+    border-top: 1px solid var(--terminal-green);
+    padding-top: 10px;
+}
+
+.ascii-footer {
+    color: var(--terminal-green);
+    font-family: var(--terminal-font);
+    white-space: pre;
+}
+
+/* Animations */
+@keyframes cursor {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+@keyframes typeWriter {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes flicker {
+    0% { opacity: 0.97; }
+    50% { opacity: 0.95; }
+    100% { opacity: 0.97; }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--terminal-bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--terminal-green);
+    border: 2px solid var(--terminal-bg);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .game-container {
+        grid-template-columns: 1fr;
+    }
+
+    .game-map {
+        height: 300px;
+    }
+}
+
+@media (max-width: 768px) {
+    .terminal {
+        margin: 10px;
+        padding: 10px;
+    }
+
+    .ascii-art {
+        font-size: 12px;
+    }
+
+    .game-map {
+        height: 250px;
+    }
+}
+
+/* Game Elements */
+.location-marker {
+    color: var(--terminal-green);
+    background: var(--terminal-bg);
+    border: 1px solid var(--terminal-green);
+    padding: 5px;
+    border-radius: 3px;
+}
+
+.quest-marker {
+    color: #ffff00;
+    background: var(--terminal-bg);
+    border: 1px solid #ffff00;
+    padding: 5px;
+    border-radius: 3px;
+}
+
+/* Enhanced Map Styles */
+.map-tiles {
+    filter: invert(1) hue-rotate(180deg) brightness(0.8) !important;
+}
+
+.location-popup {
+    font-family: var(--terminal-font);
+    color: var(--terminal-green);
+    background: var(--terminal-bg);
+    padding: 10px;
+    border: 1px solid var(--terminal-green);
+}
+
+.location-popup h3 {
+    color: var(--terminal-green);
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.location-popup p {
+    margin: 5px 0;
+}
+
+.location-popup small {
+    color: var(--terminal-dim);
+    display: block;
+    margin-top: 5px;
+    text-align: center;
+}
+
+/* Danger Zone Marker */
+.danger-marker {
+    color: #ff0000;
+    background: var(--terminal-bg);
+    border: 1px solid #ff0000;
+    padding: 5px;
+    border-radius: 3px;
+}
+
+/* Story Elements */
+.story-highlight {
+    color: #ffff00;
+    font-style: italic;
+}
+
+.quest-update {
+    color: #00ffff;
+    font-weight: bold;
+    padding: 5px;
+    margin: 5px 0;
+    border-left: 2px solid #00ffff;
+}
+
+/* Enhanced Game Interface */
+.game-output {
+    height: 250px;  /* Increased height for more story text */
+}
+
+.output-text p {
+    padding: 3px 5px;
+    border-radius: 2px;
+    transition: background-color 0.3s ease;
+}
+
+.output-text p:hover {
+    background: rgba(0, 255, 0, 0.1);
+}
+
+/* Status Effects */
+.status-critical {
+    color: #ff0000;
+    animation: pulse 2s infinite;
+}
+
+.status-warning {
+    color: #ffff00;
+}
+
+.status-good {
+    color: #00ff00;
+}
+
+/* Map Overlay Effects */
+.leaflet-popup-content-wrapper {
+    background: rgba(0, 0, 0, 0.9);
+    color: var(--terminal-green);
+}
+
+.leaflet-popup-tip {
+    background: var(--terminal-green);
+}
+
+.leaflet-container {
+    background: #000 !important;
+}
+
+/* Scan Effect Animation */
+@keyframes scan {
+    0% {
+        height: 0;
+        opacity: 0.5;
+    }
+    50% {
+        height: 100%;
+        opacity: 0.8;
+    }
+    100% {
+        height: 0;
+        opacity: 0.5;
+    }
+}
+
+.scanning::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--terminal-green);
+    animation: scan 2s linear infinite;
+}
+
+/* Enhanced Animations */
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.typewriter {
+    animation: fadeIn 0.3s ease-out forwards;
+}
+
+/* Add these new styles for enhanced map interaction */
+
+/* Map Icon Styles */
+.player-icon, .location-icon, .danger-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 24px;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease;
+}
+
+.player-icon {
+    color: var(--terminal-green);
+}
+
+.player-label, .location-label, .danger-label {
+    font-size: 12px;
+    margin-top: 2px;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 2px 5px;
+    border-radius: 3px;
+    white-space: nowrap;
+}
+
+.player-label {
+    color: var(--terminal-green);
+}
+
+.location-label {
+    color: #ffff00;
+}
+
+.danger-label {
+    color: #ff0000;
+}
+
+/* Hover Effects */
+.location-icon:hover, .player-icon:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+/* Custom Popup Styles */
+.custom-popup .leaflet-popup-content-wrapper {
+    background: rgba(0, 0, 0, 0.9);
+    color: var(--terminal-green);
+    border: 1px solid var(--terminal-green);
+}
+
+.custom-popup .leaflet-popup-tip {
+    background: var(--terminal-green);
+}
+
+.popup-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.popup-button {
+    background: transparent;
+    color: var(--terminal-green);
+    border: 1px solid var(--terminal-green);
+    padding: 5px 10px;
+    cursor: pointer;
+    font-family: var(--terminal-font);
+    transition: all 0.3s ease;
+    flex: 1;
+}
+
+.popup-button:hover:not([disabled]) {
+    background: var(--terminal-green);
+    color: var(--terminal-bg);
+}
+
+.popup-button[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    border-color: #666;
+}
+
+.locked-message {
+    color: #ff0000;
+    font-size: 0.9em;
+    margin-top: 5px;
+    text-align: center;
+}
+
+/* Danger Zone Styles */
+.danger-popup h3 {
+    color: #ff0000;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.warning-text {
+    color: #ff0000;
+    font-style: italic;
+    margin-top: 5px;
+}
+
+/* Animation Effects */
+.pulse-circle {
+    animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+}
+
+.danger-circle {
+    animation: danger-pulse 2s ease-out infinite;
+}
+
+@keyframes pulse-ring {
+    0% {
+        transform: scale(0.95);
+        opacity: 0.5;
+    }
+    50% {
+        transform: scale(1);
+        opacity: 0.3;
+    }
+    100% {
+        transform: scale(0.95);
+        opacity: 0.5;
+    }
+}
+
+@keyframes danger-pulse {
+    0% {
+        opacity: 0.2;
+    }
+    50% {
+        opacity: 0.3;
+    }
+    100% {
+        opacity: 0.2;
+    }
+}
+
+/* Map Control Styles */
+.leaflet-control-zoom {
+    border: 1px solid var(--terminal-green) !important;
+    background: rgba(0, 0, 0, 0.8) !important;
+}
+
+.leaflet-control-zoom a {
+    color: var(--terminal-green) !important;
+    background: transparent !important;
+    border-color: var(--terminal-green) !important;
+}
+
+.leaflet-control-zoom a:hover {
+    background: var(--terminal-green) !important;
+    color: var(--terminal-bg) !important;
+}
+
+/* Enhanced Location Markers */
+.location-marker {
+    transition: all 0.3s ease;
+}
+
+.location-marker:hover {
+    filter: brightness(1.2);
+    transform: scale(1.1);
+}
+
+/* Map Interaction Hints */
+.map-hint {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: var(--terminal-green);
+    padding: 5px 10px;
+    border-radius: 3px;
+    font-size: 0.9em;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.game-map:hover .map-hint {
+    opacity: 1;
+} 

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shadows Over the Archipelago</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet-moving-marker@0.3.0/dist/leaflet.movingmarker.min.js"></script>
+</head>
+<body>
+    <div class="crt-overlay"></div>
+    <div class="terminal">
+        <div class="header">
+            <h1>Shadows Over the Archipelago</h1>
+            <p class="subtitle">A Post-Apocalyptic Tale of Survival</p>
+        </div>
+
+        <div class="game-container">
+            <div class="left-panel">
+                <div class="game-map">
+                    <div id="map"></div>
+                </div>
+                <div class="quick-actions">
+                    <button class="action-btn" onclick="window.gameCommands.look()">LOOK</button>
+                    <button class="action-btn" onclick="window.gameCommands.scan()">SCAN</button>
+                    <button class="action-btn" onclick="window.gameCommands.inv()">INVENTORY</button>
+                    <button class="action-btn" onclick="window.gameCommands.status()">STATUS</button>
+                    <button class="action-btn" onclick="window.gameCommands.quest()">QUEST</button>
+                    <button class="action-btn" onclick="window.gameCommands.story()">STORY</button>
+                </div>
+            </div>
+            
+            <div class="right-panel">
+                <div class="status-panel">
+                    <pre class="status-box">
++====================+
+|     CHARACTER      |
++====================+
+| Name: Tala Reyes   |
+| Class: Med Student |
+| Health: ████████   |
+| Energy: ██████     |
+| Items: 3          |
++====================+
+                    </pre>
+                </div>
+
+                <div class="location-info">
+                    <div class="location-header">
+                        <h3>Current Location: <span id="current-location">Quezon City Hospital</span></h3>
+                        <div class="npc-counter">NPCs Present: <span id="npc-count">0</span></div>
+                    </div>
+                    <div class="npc-list" id="npc-list">
+                        <!-- NPCs will be dynamically added here -->
+                    </div>
+                </div>
+
+                <div class="game-output">
+                    <div class="output-text">
+                        <p class="typewriter">> Initializing game world...</p>
+                    </div>
+                </div>
+
+                <div class="game-input">
+                    <div class="command-list">
+                        <p>> Quick Commands:</p>
+                        <div class="quick-commands">
+                            <button class="cmd-btn" onclick="window.quickCommand('north')">NORTH</button>
+                            <button class="cmd-btn" onclick="window.quickCommand('south')">SOUTH</button>
+                            <button class="cmd-btn" onclick="window.quickCommand('east')">EAST</button>
+                            <button class="cmd-btn" onclick="window.quickCommand('west')">WEST</button>
+                            <button class="cmd-btn" onclick="window.quickCommand('rest')">REST</button>
+                            <button class="cmd-btn" onclick="window.quickCommand('heal')">HEAL</button>
+                        </div>
+                    </div>
+                    <div class="input-line">
+                        <form id="game-command-form">
+                            <label for="command">> </label>
+                            <input type="text" id="command" name="command" autocomplete="off" placeholder="Type command or use buttons above...">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-footer">
+            <pre class="ascii-footer">
++------------------------------------------+
+|  SYSTEM STATUS: ACTIVE   |  QUEST: ACT I  |
+|  LOCATION: QUEZON CITY   |  TIME: 21:42   |
++------------------------------------------+
+            </pre>
+        </div>
+    </div>
+
+    <!-- Dialog Modal -->
+    <div id="dialog-modal" class="modal">
+        <div class="modal-content">
+            <div class="dialog-header">
+                <h2 id="npc-name">NPC Name</h2>
+                <span class="close-btn">&times;</span>
+            </div>
+            <div class="dialog-body">
+                <div id="dialog-text"></div>
+                <div id="dialog-options"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="story.js"></script>
+    <script src="gameEngine.js"></script>
+    <script src="script.js"></script>
+</body>
+</html> 
